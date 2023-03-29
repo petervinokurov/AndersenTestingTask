@@ -24,14 +24,14 @@ public class ProductServiceTests
     [Fact]
     public async Task EmptyFilterShouldReturnAllProducts()
     {
-        var result = await _service.GetProducts(new FilterModel());
+        var result = await _service.GetProductsAsync(new FilterModel());
         Assert.Equal(3, result.Products.Count);
     }
     
     [Fact]
     public async Task FilterWithMinPriceShouldReturnProductsWithPriceGreaterThanMinPriceInFilter()
     {
-        var result = await _service.GetProducts(new FilterModel { MinPrice = 15 });
+        var result = await _service.GetProductsAsync(new FilterModel { MinPrice = 15 });
         Assert.Equal(2, result.Products.Count);
         Assert.All(result.Products, x => Assert.True(x.Price >= 15));
     }
@@ -39,7 +39,7 @@ public class ProductServiceTests
     [Fact]
     public async Task FilterWithMaxPriceShouldReturnProductsWithPriceLessThanMinPriceInFilter()
     {
-        var result = await _service.GetProducts(new FilterModel { MaxPrice = 15 });
+        var result = await _service.GetProductsAsync(new FilterModel { MaxPrice = 15 });
         Assert.Equal(2, result.Products.Count);
         Assert.All(result.Products, x => Assert.True(x.Price <= 15));
     }
@@ -47,7 +47,7 @@ public class ProductServiceTests
     [Fact]
     public async Task FilterWithOneSizeShouldReturnProductsWithListOfSizesWhereWillBeSizeFromFilter()
     {
-        var result = await _service.GetProducts(new FilterModel { Size = "small" });
+        var result = await _service.GetProductsAsync(new FilterModel { Size = "small" });
         Assert.Equal(2, result.Products.Count);
         Assert.All(result.Products, x => Assert.Contains("small", x.Sizes));
     }
@@ -55,7 +55,7 @@ public class ProductServiceTests
     [Fact]
     public async Task FilterWithTwoSizesShouldReturnProductsWithListOfSizesWhereWillBeSizesFromFilter()
     {
-        var result = await _service.GetProducts(new FilterModel { Size = "small,large" });
+        var result = await _service.GetProductsAsync(new FilterModel { Size = "small,large" });
         Assert.Single(result.Products);
         Assert.All(result.Products, x => Assert.Contains("small", x.Sizes));
         Assert.All(result.Products, x => Assert.Contains("large", x.Sizes));
@@ -64,7 +64,7 @@ public class ProductServiceTests
     [Fact]
     public async Task FilterWithHighlightShouldReturnProductsWithMarkedWordsInDescription()
     {
-        var result = await _service.GetProducts(new FilterModel { Highlight = "green" });
+        var result = await _service.GetProductsAsync(new FilterModel { Highlight = "green" });
         Assert.Equal(3, result.Products.Count);
         Assert.Contains(result.Products, x => x.Description.Contains("<em>green</em>"));
     }
@@ -72,14 +72,14 @@ public class ProductServiceTests
     [Fact]
     public async Task FilterWithHighlightSeparatedByCommaShouldReturnProductsWithMarkedWordsInDescription()
     {
-        var result = await _service.GetProducts(new FilterModel { Highlight = "green,red" });
+        var result = await _service.GetProductsAsync(new FilterModel { Highlight = "green,red" });
         Assert.Equal(3, result.Products.Count);
     }
     
     [Fact]
     public async Task FilterObjectShouldSetInResponse()
     {
-        var result = await _service.GetProducts(new FilterModel { Highlight = "green,red" });
+        var result = await _service.GetProductsAsync(new FilterModel { Highlight = "green,red" });
         Assert.Equal(20, result.FilterObject.MaxPrice);
         Assert.Equal(10, result.FilterObject.MinPrice);
         Assert.Contains("small", result.FilterObject.Sizes);

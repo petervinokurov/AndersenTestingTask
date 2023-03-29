@@ -17,10 +17,10 @@ public class Product
         var descriptionByWords = Description.Split(" ").ToList();
         highlights.ForEach(f =>
         {
-            var w = descriptionByWords.IndexOf(f);
-            if (w >= 0)
+            var pointer = descriptionByWords.IndexOf(f);
+            if (pointer >= 0)
             {
-                descriptionByWords[w] = $"<em>{f}</em>";
+                descriptionByWords[pointer] = $"<em>{f}</em>";
             }
         });
         return string.Join(" ", descriptionByWords);

@@ -4,5 +4,5 @@ namespace AndersenTestingTask.Services.Interfaces;
 
 public interface IProductService
 {
-    Task<ProductResponse> GetProducts(FilterModel filter);
+    Task<ProductResponse> GetProductsAsync(FilterModel filter);
 }

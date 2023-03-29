@@ -11,7 +11,9 @@ public class MockyDataProvider : IDataProvider
 {
     private readonly IConfiguration _configuration;
     private readonly ILogger<MockyDataProvider> _logger;
-    public MockyDataProvider(IConfiguration configuration, ILogger<MockyDataProvider> logger)
+    
+    public MockyDataProvider(IConfiguration configuration, 
+        ILogger<MockyDataProvider> logger)
     {
         _configuration = configuration;
         _logger = logger;

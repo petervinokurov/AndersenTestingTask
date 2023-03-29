@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -22,13 +21,16 @@ builder.Services.AddRateLimiter(_ => _
         options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
         options.QueueLimit = 2;
     }));
+
 builder.Services.AddCors(options =>
     options.AddPolicy("AllowClientApp", p => p
         .WithOrigins("https://localhost:7132")
         .AllowCredentials()
         .AllowAnyMethod()
         .AllowAnyHeader()));
+
 builder.Services.AddMemoryCache();
+
 builder.Services.AddTransient<IDataProvider, MockyDataProvider>();
 builder.Services.AddTransient<IProductService, ProductsService>();
 
@@ -47,7 +49,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.UseCors();
-
 
 app.UseRateLimiter();
 

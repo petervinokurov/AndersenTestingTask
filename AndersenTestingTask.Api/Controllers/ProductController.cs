@@ -21,6 +21,6 @@ public class ProductController : ControllerBase
     public Task<ProductResponse> Filter([FromQuery]FilterModel filter)
     {
         _logger.LogInformation($"Filter applied: {filter}");
-        return _context.GetProducts(filter);
+        return _context.GetProductsAsync(filter);
     }
 }
