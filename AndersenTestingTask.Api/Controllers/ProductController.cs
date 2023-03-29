@@ -16,6 +16,7 @@ public class ProductController : ControllerBase
         _logger = logger;
     }
 
+    // The method naming doesn't align with the REST convention.
     [HttpGet]
     public Task<ProductResponse> Filter([FromQuery]FilterModel filter)
     {
