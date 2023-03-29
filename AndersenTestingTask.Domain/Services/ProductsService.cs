@@ -1,48 +1,52 @@
 using AndersenTestingTask.Domain.Models;
+using AndersenTestingTask.Domain.Repositories.Interfaces;
 using AndersenTestingTask.Services.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using RestSharp;
 
 namespace AndersenTestingTask.Domain.Services;
 
 public class ProductsService : IProductService
 {
-    private const string DataUrl = "http://www.mocky.io/v2/5e307edf3200005d00858b49";
+    private const string DataKey = "Data";
+    private const string FilterObjectKey = "FilterObject";
     private readonly IMemoryCache _cache;
     private readonly ILogger<ProductsService> _logger;
+    private readonly IDataProvider _dataProvider;
 
-    public ProductsService(IMemoryCache cache, ILogger<ProductsService> logger)
+    public ProductsService(IMemoryCache cache,
+        ILogger<ProductsService> logger,
+        IDataProvider dataProvider)
     {
         _cache = cache;
         _logger = logger;
+        _dataProvider = dataProvider;
     }
-    public async Task<List<ProductDto>> GetProducts(FilterModel filter)
+    public async Task<ProductResponse> GetProducts(FilterModel filter)
     {
-        var products = _cache.Get<IEnumerable<Product>>(nameof(DataUrl));
-        if (products == null)
+        var response = new ProductResponse();
+        var products = _cache.Get<IEnumerable<Product>>(DataKey);
+        var filterObject = _cache.Get<ResponseFilter>(FilterObjectKey);
+        if (products == null || filterObject == null)
         {
-            using var client = new RestClient();
+            var data = await _dataProvider.Products();
+            _cache.Set(DataKey, data.Products);
+            products = data.Products.ToList();
+            response.FilterObject = new ResponseFilter
             {
-                var response = await client.ExecuteAsync<ContextModel>(new RestRequest(DataUrl));
-                if (response.ResponseStatus == ResponseStatus.Completed)
-                {
-                    _logger.LogInformation($"Data request executed with {response.Data?.Products.Count()} entries.");
-                }
-                else
-                {
-                    _logger.LogError($"{response.StatusDescription}");
-                }
-
-                _cache.Set(nameof(DataUrl), response.Data?.Products);
-                products = response.Data?.Products ?? new List<Product>();
-            }
+                Sizes = products.SelectMany(x => x.Sizes).Distinct().ToArray(),
+                MinPrice = products.Select(x => x.Price).Min(),
+                MaxPrice = products.Select(x => x.Price).Max(),
+                Words = products.SelectMany(x => x.Description.Split(" "))
+                    .GroupBy(x => x).Select(x => new { x.Key, Count = x.Count() })
+                    .OrderByDescending(x => x.Count).Skip(5).Take(10).Select(x => x.Key).ToArray() 
+            };
         }
         else
         {
             _logger.LogInformation($"Data found in cache.");
         }
-
+        
         var sizes = filter.Size?.Split(',').ToList() ?? new List<string>();
         var highlights = filter.Highlight?.Split(',').ToList() ?? new List<string>();
 
@@ -61,20 +65,15 @@ public class ProductsService : IProductService
             products = products.Where(x => x.Sizes.Intersect(sizes).Count() == sizes.Count);
         }
 
-        if (highlights.Any())
-        {
-            products = products.Where(x => x.Description.Split(" ").Intersect(highlights).Any());
-        }
-
-        var result = products.Select(x =>
+        response.Products = products.Select(x =>
             new ProductDto
                     { Price = x.Price, Title = x.Title,
                         Description = x.CustomDescription(highlights), 
                         Sizes = x.Sizes }
             
         ).ToList();
-        _logger.LogInformation($"Filter applied with result {result.Count} entries.");
-        return result;
+        _logger.LogInformation($"Filter applied with result {response.Products.Count} entries.");
+        return response;
     }
 
 }

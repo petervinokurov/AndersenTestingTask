@@ -17,7 +17,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
-    public Task<List<ProductDto>> Filter([FromQuery]FilterModel filter)
+    public Task<ProductResponse> Filter([FromQuery]FilterModel filter)
     {
         _logger.LogInformation($"Filter applied: {filter}");
         return _context.GetProducts(filter);

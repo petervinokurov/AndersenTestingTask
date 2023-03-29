@@ -1,9 +1,12 @@
 using System.Threading.RateLimiting;
+using AndersenTestingTask.Domain.Repositories;
+using AndersenTestingTask.Domain.Repositories.Interfaces;
 using AndersenTestingTask.Domain.Services;
 using AndersenTestingTask.Services.Interfaces;
 using Microsoft.AspNetCore.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 
@@ -26,6 +29,7 @@ builder.Services.AddCors(options =>
         .AllowAnyMethod()
         .AllowAnyHeader()));
 builder.Services.AddMemoryCache();
+builder.Services.AddTransient<IDataProvider, MockyDataProvider>();
 builder.Services.AddTransient<IProductService, ProductsService>();
 
 var app = builder.Build();
