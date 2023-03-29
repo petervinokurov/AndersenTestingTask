@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndersenTestingTask.Api", "AndersenTestingTask.Api\AndersenTestingTask.Api.csproj", "{B4D48889-057F-4F72-8455-7BC81E1DBCC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndersenTestingTask.Domain", "AndersenTestingTask.Domain\AndersenTestingTask.Domain.csproj", "{160A891B-76DD-4639-8D88-BB63B5CF7A4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndersenTestingTask.Tests", "AndersenTestingTask.Tests\AndersenTestingTask.Tests.csproj", "{27B37E73-E758-4E6C-8EC2-E4F53056C89C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4D48889-057F-4F72-8455-7BC81E1DBCC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4D48889-057F-4F72-8455-7BC81E1DBCC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4D48889-057F-4F72-8455-7BC81E1DBCC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4D48889-057F-4F72-8455-7BC81E1DBCC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{160A891B-76DD-4639-8D88-BB63B5CF7A4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{160A891B-76DD-4639-8D88-BB63B5CF7A4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{160A891B-76DD-4639-8D88-BB63B5CF7A4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{160A891B-76DD-4639-8D88-BB63B5CF7A4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27B37E73-E758-4E6C-8EC2-E4F53056C89C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27B37E73-E758-4E6C-8EC2-E4F53056C89C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27B37E73-E758-4E6C-8EC2-E4F53056C89C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27B37E73-E758-4E6C-8EC2-E4F53056C89C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

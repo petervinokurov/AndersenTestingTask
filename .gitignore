@@ -1,0 +1,16 @@
+
+AndersenTestingTask.Api/obj/Debug/net7.0/
+
+AndersenTestingTask.Tests/bin/Debug/net7.0/
+
+AndersenTestingTask.Tests/obj/
+
+AndersenTestingTask.Domain/obj/
+
+AndersenTestingTask.Domain/bin/Debug/net7.0/
+
+AndersenTestingTask.Api/obj/
+
+AndersenTestingTask.Api/bin/Debug/net7.0/
+
+.idea/.idea.AndersenTestingTask/.idea/
