@@ -33,7 +33,7 @@ public class ProductsService : IProductService
             var data = await _dataProvider.Products();
             _cache.Set(DataKey, data.Products);
             products = data.Products.ToList();
-            response.FilterObject = new ResponseFilter
+            filterObject = new ResponseFilter
             {
                 Sizes = products.SelectMany(x => x.Sizes).Distinct().ToArray(),
                 MinPrice = products.Select(x => x.Price).Min(),
@@ -42,10 +42,11 @@ public class ProductsService : IProductService
                     .GroupBy(x => x).Select(x => new { x.Key, Count = x.Count() })
                     .OrderByDescending(x => x.Count).Skip(5).Take(10).Select(x => x.Key).ToArray() 
             };
-            _cache.Set(FilterObjectKey, response.FilterObject);
+            _cache.Set(FilterObjectKey, filterObject);
         }
         else
         {
+            
             _logger.LogInformation($"Data found in cache.");
         }
         
@@ -74,6 +75,7 @@ public class ProductsService : IProductService
                         Sizes = x.Sizes }
             
         ).ToList();
+        response.FilterObject = filterObject;
         _logger.LogInformation($"Filter applied with result {response.Products.Count} entries.");
         return response;
     }
