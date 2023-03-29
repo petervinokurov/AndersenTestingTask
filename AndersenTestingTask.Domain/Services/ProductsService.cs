@@ -42,6 +42,7 @@ public class ProductsService : IProductService
                     .GroupBy(x => x).Select(x => new { x.Key, Count = x.Count() })
                     .OrderByDescending(x => x.Count).Skip(5).Take(10).Select(x => x.Key).ToArray() 
             };
+            _cache.Set(FilterObjectKey, response.FilterObject);
         }
         else
         {
