@@ -75,6 +75,20 @@ public class ProductServiceTests
         var result = await _service.GetProducts(new FilterModel { Highlight = "green,red" });
         Assert.Equal(3, result.Products.Count);
     }
+    
+    [Fact]
+    public async Task FilterObjectShouldSetInResponse()
+    {
+        var result = await _service.GetProducts(new FilterModel { Highlight = "green,red" });
+        Assert.Equal(20, result.FilterObject.MaxPrice);
+        Assert.Equal(10, result.FilterObject.MinPrice);
+        Assert.Contains("small", result.FilterObject.Sizes);
+        Assert.Contains("medium", result.FilterObject.Sizes);
+        Assert.Contains("large", result.FilterObject.Sizes);
+        Assert.Contains("green", result.FilterObject.Words);
+        Assert.Contains("red", result.FilterObject.Words);
+        Assert.Contains("blue", result.FilterObject.Words);
+    }
 
     private ContextModel GetContextModel()
     {
@@ -86,17 +100,17 @@ public class ProductServiceTests
         {
             new Product
             {
-                Title = "Test Title 1", Description = "green red", Price = 10,
+                Title = "Test Title 1", Description = "a b c d e green the red", Price = 10,
                 Sizes = new List<string> { "small", "medium" }
             },
             new Product
             {
-                Title = "Test Title 2", Description = "blue red", Price = 15,
+                Title = "Test Title 2", Description = "a b c d e blue the red", Price = 15,
                 Sizes = new List<string> { "small", "large" }
             },
             new Product
             {
-                Title = "Test Title 3", Description = "green blue", Price = 20,
+                Title = "Test Title 3", Description = "a b c d e green the blue", Price = 20,
                 Sizes = new List<string> { "large", "medium" }
             }
             
