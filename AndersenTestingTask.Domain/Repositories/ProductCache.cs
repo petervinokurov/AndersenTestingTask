@@ -17,22 +17,20 @@ public class ProductCache : IProductCache
                 minPrice = product.Price;
             if (maxPrice < product.Price)
                 maxPrice = product.Price;
-            foreach (var size in product.Sizes)
-            {
-                allSizes.Add(size);
-            }
+            
+            allSizes.UnionWith(product.Sizes);
 
-            var wordsInDesc = product.Description.Split(" ");
+            var wordsInDesc = product.Description.Split(" ").Select(x => x.Trim('.'));
             foreach (var word in wordsInDesc)
             {
-                if (commonWords.TryGetValue(word.Trim('.'), out var i))
+                if (commonWords.TryGetValue(word, out var i))
                 {
                     i++;
-                    commonWords[word.Trim('.')] = i;
+                    commonWords[word] = i;
                 }
                 else
                 {
-                    commonWords.Add(word.Trim('.'), 1);
+                    commonWords.Add(word, 1);
                 }
             }
         }
