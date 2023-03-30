@@ -13,8 +13,12 @@ public class Product
     public string CustomDescription(List<string> highlights)
     {
         if (!highlights.Any())
+        {
             return Description;
+        }
+        
         var descriptionByWords = Description.Split(" ").ToList();
+        
         highlights.ForEach(f =>
         {
             var pointer = descriptionByWords.IndexOf(f);
@@ -23,6 +27,7 @@ public class Product
                 descriptionByWords[pointer] = $"<em>{f}</em>";
             }
         });
+        
         return string.Join(" ", descriptionByWords);
     }
 

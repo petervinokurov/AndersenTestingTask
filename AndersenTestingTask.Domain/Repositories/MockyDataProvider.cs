@@ -22,6 +22,7 @@ public class MockyDataProvider : IDataProvider
     public async Task<ContextModel> Products()
     {
         var model = new ContextModel();
+        
         using var client = new RestClient();
         {
             var urlResponse = await client.ExecuteAsync<ContextModel>(new RestRequest(_configuration["DataUrl"]));

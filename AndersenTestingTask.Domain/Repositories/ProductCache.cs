@@ -11,12 +11,18 @@ public class ProductCache : IProductCache
         decimal maxPrice = 0;
         HashSet<string> allSizes = new HashSet<string>();
         Dictionary<string, int> commonWords = new Dictionary<string, int>();
+        
         foreach (var product in products)
         {
             if (minPrice > product.Price || minPrice == 0)
+            {
                 minPrice = product.Price;
+            }
+
             if (maxPrice < product.Price)
+            {
                 maxPrice = product.Price;
+            }
             
             allSizes.UnionWith(product.Sizes);
 
