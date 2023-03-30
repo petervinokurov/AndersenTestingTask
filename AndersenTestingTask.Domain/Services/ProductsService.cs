@@ -30,6 +30,7 @@ public class ProductsService : IProductService
         var response = new ProductResponse();
         var products = _cache.Get<IEnumerable<Product>>(DataKey);
         var filterObject = _cache.Get<ResponseFilter>(FilterObjectKey);
+        
         // Reload the cache if something is not set in it. OR statement selected because of data consistency issue.
         if (products == null || filterObject == null)
         {
@@ -77,5 +78,4 @@ public class ProductsService : IProductService
         
         return response;
     }
-
 }
