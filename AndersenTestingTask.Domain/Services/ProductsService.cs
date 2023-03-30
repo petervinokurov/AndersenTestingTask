@@ -73,6 +73,7 @@ public class ProductsService : IProductService
                 Sizes = x.Sizes 
             }
         ).ToList();
+        
         response.FilterObject = filterObject;
         _logger.LogInformation($"Filter applied with result {response.Products.Count} entries.");
         
