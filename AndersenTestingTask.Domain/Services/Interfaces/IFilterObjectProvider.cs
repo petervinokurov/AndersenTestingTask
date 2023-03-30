@@ -1,8 +1,8 @@
 using AndersenTestingTask.Domain.Models;
 
-namespace AndersenTestingTask.Domain.Repositories.Interfaces;
+namespace AndersenTestingTask.Domain.Services.Interfaces;
 
-public interface IProductCache
+public interface IFilterObjectProvider
 {
     ResponseFilter GetFilterObject(IEnumerable<Product> products);
 }

@@ -1,5 +1,6 @@
 using AndersenTestingTask.Domain.Models;
 using AndersenTestingTask.Domain.Repositories.Interfaces;
+using AndersenTestingTask.Domain.Services.Interfaces;
 using AndersenTestingTask.Services.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
@@ -13,17 +14,17 @@ public class ProductsService : IProductService
     private readonly IMemoryCache _cache;
     private readonly ILogger<ProductsService> _logger;
     private readonly IDataProvider _dataProvider;
-    private readonly IProductCache _productCache;
+    private readonly IFilterObjectProvider _filterObjectProvider;
 
     public ProductsService(IMemoryCache cache,
         ILogger<ProductsService> logger,
         IDataProvider dataProvider,
-        IProductCache productCache)
+        IFilterObjectProvider filterObjectProvider)
     {
         _cache = cache;
         _logger = logger;
         _dataProvider = dataProvider;
-        _productCache = productCache;
+        _filterObjectProvider = filterObjectProvider;
     }
     public async Task<ProductResponse> GetProductsAsync(FilterModel filter)
     {
@@ -38,7 +39,7 @@ public class ProductsService : IProductService
             _cache.Set(DataKey, data.Products);
             products = data.Products.ToList();
 
-            filterObject = _productCache.GetFilterObject(products);
+            filterObject = _filterObjectProvider.GetFilterObject(products);
             _cache.Set(FilterObjectKey, filterObject);
         }
         else

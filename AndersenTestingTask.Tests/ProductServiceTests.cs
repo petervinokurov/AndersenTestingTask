@@ -1,5 +1,5 @@
 using AndersenTestingTask.Domain.Models;
-using AndersenTestingTask.Domain.Repositories;
+using AndersenTestingTask.Domain.Services;
 using AndersenTestingTask.Domain.Repositories.Interfaces;
 using AndersenTestingTask.Domain.Services;
 using Microsoft.Extensions.Caching.Memory;
@@ -19,7 +19,7 @@ public class ProductServiceTests
         var dataProviderMock = new Mock<IDataProvider>();
         dataProviderMock.Setup(x => x.Products()).ReturnsAsync(GetContextModel());
         cache.Set("DataUrl", GetTestProducts());
-        _service = new ProductsService(cache, mock.Object, dataProviderMock.Object, new ProductCache());
+        _service = new ProductsService(cache, mock.Object, dataProviderMock.Object, new FilterObjectProvider());
     }
     
     [Fact]

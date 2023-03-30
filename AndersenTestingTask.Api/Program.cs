@@ -2,6 +2,7 @@ using System.Threading.RateLimiting;
 using AndersenTestingTask.Domain.Repositories;
 using AndersenTestingTask.Domain.Repositories.Interfaces;
 using AndersenTestingTask.Domain.Services;
+using AndersenTestingTask.Domain.Services.Interfaces;
 using AndersenTestingTask.Services.Interfaces;
 using Microsoft.AspNetCore.RateLimiting;
 
@@ -33,7 +34,7 @@ builder.Services.AddMemoryCache();
 
 builder.Services.AddTransient<IDataProvider, MockyDataProvider>();
 builder.Services.AddTransient<IProductService, ProductsService>();
-builder.Services.AddTransient<IProductCache, ProductCache>();
+builder.Services.AddTransient<IFilterObjectProvider, FilterObjectProvider>();
 
 var app = builder.Build();
 
