@@ -33,6 +33,7 @@ builder.Services.AddMemoryCache();
 
 builder.Services.AddTransient<IDataProvider, MockyDataProvider>();
 builder.Services.AddTransient<IProductService, ProductsService>();
+builder.Services.AddTransient<IProductCache, ProductCache>();
 
 var app = builder.Build();
 

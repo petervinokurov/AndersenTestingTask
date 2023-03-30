@@ -13,14 +13,17 @@ public class ProductsService : IProductService
     private readonly IMemoryCache _cache;
     private readonly ILogger<ProductsService> _logger;
     private readonly IDataProvider _dataProvider;
+    private readonly IProductCache _productCache;
 
     public ProductsService(IMemoryCache cache,
         ILogger<ProductsService> logger,
-        IDataProvider dataProvider)
+        IDataProvider dataProvider,
+        IProductCache productCache)
     {
         _cache = cache;
         _logger = logger;
         _dataProvider = dataProvider;
+        _productCache = productCache;
     }
     public async Task<ProductResponse> GetProductsAsync(FilterModel filter)
     {
@@ -30,20 +33,11 @@ public class ProductsService : IProductService
         // Reload the cache if something is not set in it. OR statement selected because of data consistency issue.
         if (products == null || filterObject == null)
         {
-            // As as improvement is better to move cache update in separate service.
             var data = await _dataProvider.Products();
             _cache.Set(DataKey, data.Products);
             products = data.Products.ToList();
-            // As an improvement is better to use one loop to calculate max, min prices and most common words.
-            filterObject = new ResponseFilter
-            {
-                Sizes = products.SelectMany(x => x.Sizes).Distinct().ToArray(),
-                MinPrice = products.Min(x => x.Price),
-                MaxPrice = products.Max(x => x.Price),
-                Words = products.SelectMany(x => x.Description.Split(" "))
-                    .GroupBy(x => x.Trim('.')).Select(x => new { x.Key, Count = x.Count() })
-                    .OrderByDescending(x => x.Count).Skip(5).Take(10).Select(x => x.Key).ToArray() 
-            };
+
+            filterObject = _productCache.GetFilterObject(products);
             _cache.Set(FilterObjectKey, filterObject);
         }
         else
