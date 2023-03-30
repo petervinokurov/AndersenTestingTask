@@ -3,7 +3,7 @@ using AndersenTestingTask.Domain.Services.Interfaces;
 
 namespace AndersenTestingTask.Domain.Services;
 
-public class FilterObjectProvider : IFilterObjectProvider
+public class FilterObjectService : IFilterObjectService
 {
     public ResponseFilter GetFilterObject(IEnumerable<Product> products)
     {

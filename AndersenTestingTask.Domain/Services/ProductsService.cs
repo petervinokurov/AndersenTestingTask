@@ -14,17 +14,17 @@ public class ProductsService : IProductService
     private readonly IMemoryCache _cache;
     private readonly ILogger<ProductsService> _logger;
     private readonly IDataProvider _dataProvider;
-    private readonly IFilterObjectProvider _filterObjectProvider;
+    private readonly IFilterObjectService _filterObjectService;
 
     public ProductsService(IMemoryCache cache,
         ILogger<ProductsService> logger,
         IDataProvider dataProvider,
-        IFilterObjectProvider filterObjectProvider)
+        IFilterObjectService filterObjectService)
     {
         _cache = cache;
         _logger = logger;
         _dataProvider = dataProvider;
-        _filterObjectProvider = filterObjectProvider;
+        _filterObjectService = filterObjectService;
     }
     public async Task<ProductResponse> GetProductsAsync(FilterModel filter)
     {
@@ -39,7 +39,7 @@ public class ProductsService : IProductService
             _cache.Set(DataKey, data.Products);
             products = data.Products.ToList();
 
-            filterObject = _filterObjectProvider.GetFilterObject(products);
+            filterObject = _filterObjectService.GetFilterObject(products);
             _cache.Set(FilterObjectKey, filterObject);
         }
         else
